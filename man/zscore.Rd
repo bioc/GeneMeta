@@ -16,8 +16,8 @@ zScoreFDR(esets,classes,useREM=TRUE,numberOfPermutations=1000,CombineExp=1:lengt
 \arguments{
   \item{esets}{a list of expression sets, one expression set per experiment. All experiments must have the same variables(genes)}
   \item{classes}{A list of class memberships, one per experiment. Each list can only contain 0 and 1. }
-  \item{useREM}{Should an REM be used for combining the zScores ?}
-  \item{theScores} {vector of scores (e.g. t-statistics or z Scores)}
+  \item{useREM}{A logical value indicating whether or not to use a REM, \code{TRUE}, or a FEM, \code{FALSE} for combining the zScores.}
+  \item{theScores}{A vector of scores (e.g. t-statistics or z Scores)}
   \item{thePermScores}{vector of permutated scores (e.g. t-statistics or z Scores)}
   \item{type}{"pos", "neg" or "two.sided"}
   \item{numberOfPermutations}{number of permutations to claculate the FDR}
@@ -29,17 +29,26 @@ zScoreFDR(esets,classes,useREM=TRUE,numberOfPermutations=1000,CombineExp=1:lengt
   computes zScores, both for the combines experiment and for each single
   experiment. The FDR is also computed for each single experiment and for the combined experiment.
 }
-\value{an \code{matrix} with one row for a gene and the following colums (please have a look at the vignette for more details):
- \item{zSco_Ex_}{for each single experiment the standardized mean difference divided by its standard deviation}
- \item{zSco}{the z statistic - MUvals divided by its standard deviation}
- \item{MUvals}{the combined standardized mean difference (using  a FEM or REM)}
- \item{MUsds}{the standard deviation of MUvals}
- \item{Qvals}{Cochran's Q statistic for each gene}
- \item{df}{the degree of freedom for the chisq distribution. This is equal to the number of combined experiments minus one.}
- \item{Qpvalues}{probability that a chisq distribution (with df degree of freedom) has a higher value than the value from the Q statistic}
- \item{Chisq}{probability that a chisq distribution (with 1 degree of freedom) has a higher value than the value of zSco^2}
- \item{Effect_Ex_}{the standardized mean difference for each single experiment}
- \item{EffectVar_Ex_}{the variance of the standardized mean difference for each single experiment}
+\value{A \code{matrix} with one row for each probe(set) and the 
+following colums: 
+ \item{zSco_Ex_}{For each single experiment the standardized mean difference divided by the estimated standard deviation}
+ \item{zSco}{The z statistic - the \code{MUvals} divided by their standard 
+ deviations.}
+ \item{MUvals}{The combined standardized mean difference (using  a FEM or REM)}
+ \item{MUsds}{The standard deviation of the \code{MUvals}.}
+ \item{Qvals}{Cochran's Q statistic for each gene.}
+ \item{df}{The degree of freedom for the Chisquare distribution. 
+This is equal to the number of combined experiments minus one.}
+ \item{Qpvalues}{The probability that a Chisquare random variable, 
+ with \code{df} degrees of freedom) has a higher value than the value from 
+ the Q statistic.}
+ \item{Chisq}{The probability that a Chisquare random variate (with 1 degree 
+  of freedom) has a higher value than the value of \eqn{zSco^2}{zSco^2}.}
+ \item{Effect_Ex_}{The standardized mean difference for each single experiment.}
+ \item{EffectVar_Ex_}{The variance of the standardized mean difference for 
+   each single experiment.}
+Note that the three column names that end in an underscore are replicated, once
+for each experiment that is being analyzed.
 }
 \references{Choi et al, Combining multiple microarray studies and
   modeling interstudy variation. Bioinformatics, 2003, i84-i90. }
@@ -47,7 +56,7 @@ zScoreFDR(esets,classes,useREM=TRUE,numberOfPermutations=1000,CombineExp=1:lengt
 \examples{
 data(Nevins)
 # #Splitting 
-thestatus  <- pData(Nevins)[,"ER.status"]
+thestatus  <- Nevins$ER.status
 group1     <- which(thestatus=="pos")
 group2     <- which(thestatus=="neg")
 rrr        <- c(sample(group1, floor(length(group1)/2)),sample(group2,ceiling(length(group2)/2)))
@@ -55,10 +64,10 @@ Split1     <- Nevins[,rrr]
 Split2     <- Nevins[,-rrr]
 
 #obtain classes
-Split1.ER<-pData(Split1)[,"ER.status"]
+Split1.ER<-Split1$ER.status
 levels(Split1.ER) <- c(0,1)
 Split1.ER<- as.numeric(as.character(Split1.ER))
-Split2.ER<-pData(Split2)[,"ER.status"]
+Split2.ER<-Split2$ER.status
 levels(Split2.ER) <- c(0,1)
 Split2.ER<- as.numeric(as.character(Split2.ER))
 
