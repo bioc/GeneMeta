@@ -99,17 +99,16 @@ collected on patients with breast cancer. \Robject{Nevins} includes data from
 <<loaddata,results=hide>>=
 library(GeneMeta)
 library(RColorBrewer)
-#load("~/Bioconductor/Projects/GraphCombine/MetaBreast/data/vantVeer.RData") 
 #load("~/Bioconductor/Projects/GraphCombine/MetaBreast/data/Nevins.RData")
 data(Nevins)
 @
 We want to look at the estrogen receptor status and find genes that have a high
-'t-statistic' for the difference between lymph node positive and negative
+'t-statistic' for the difference between estrogen receptor positive and negative
 patients. Actually we don't use the t statistic itself but
 
 $$ d = t \cdot \sqrt{\frac{n_1 + n_2}{n_1\cdot n_2}}$$.
 
-Here $t$ is the 'usual' t-statistic and $n_1$ and $n_2$ are the number of
+Here $t$ is the 'usual' $t$-statistic and $n_1$ and $n_2$ are the number of
 elements in the two groups.
 
 We create two data sets from the original set by splitting. We
@@ -182,7 +181,7 @@ mean(my.Q)
 hist(my.Q,breaks=50,col="red")
 @
 
-We can see immediately from the histogram and the mean of the Q values
+We can see immediately from the histogram and the mean of the $Q$ values
 that the hypothesis that these values come from a $\chi^2_1$ random
 variable seems to be valid. 
 
@@ -201,7 +200,7 @@ lines(chisqq, chisqq, lty="dotted",col="red")
 
 Given that we need to fit a FEM model we next compute the estimated
 effect sizes. Each effect size is a weighted average of the effects for
-the individual experiments divided by its' standard error. The weights are the
+the individual experiments divided by its standard error. The weights are the
 reciprocal of the estimated variances.
 
 
@@ -262,7 +261,7 @@ of the genes the variance $\tau$ is estimated as zero.
 hist(my.tau2.DL,col="red",breaks=50,main="Histogram of tau")
 @
 
-The procedure procedure described above is also implemented in the function
+The procedure described above is also implemented in the function
 \Rfunction{zScores} (part of this package) and \Rfunction{meta.summaries} from the package
 \Rpackage{rmeta}. While \Rfunction{meta.summaries} do the calculation for 
 arbitrary effects and their variances, \Rfunction{zScores} exactly follows the
@@ -282,16 +281,30 @@ theScores <- zScores(esets,classes,useREM=FALSE,CombineExp=1:2)
 @
 
 
-We get a matrix in the following form. zScores for the two splits
-('zSco\_Ex\_1' and 'zSco\_Ex\_2') for the original set ('zSco\_Ex\_3'), and for the
-combined set ('zSco'). We furthermore get the other values we calculated above.
-
+We get a matrix in the following form.
 <<show results>>=
 theScores[1:2,]
 @
+Here \Robject{Effect\_Ex\_1} and \Robject{Effect\_Ex\_2} are the unbiased
+estimates of the effect (\Robject{d.adj.Split1} and \Robject{d.adj.Split2}).
+\Robject{EffectVar\_Ex\_1} and \Robject{EffectVar\_Ex\_2} are the estimated variances of the
+unbiased effects (\Robject{var.d.adj.Split1} and \Robject{var.d.adj.Split2}).
+\Robject{zSco\_Ex\_1} and \Robject{zSco\_Ex\_2} are the unbiased estimates of the
+effects divided by their standard deviation.
+The same values are also calculated the the complete data set (
+\Robject{Effect\_Ex\_3},\Robject{EffectVar\_Ex\_3}, and \Robject{ZSco\_Ex\_3}).
 
+\Robject{Qvals} are the Q statistics (\Robject{my.Q}) and \Robject{df} is the
+number of combined experiments minus one. \Robject{MUvals} and \Robject{MUsds}
+are equal to \Robject{muFEM} and \Robject{sdFEM} (the overall mean
+effect size and its standard deviation). \Robject{zSco} are the z
+scores (\Robject{ZFEM}). \Robject{Qpvalues} is  for each gene the
+probability that  a chisq distribution with \Robject{df} degree of freedom has
+a higher value than its Q statistic. And \Robject{Chisq} is the  probability
+that a chisq distribution with $1$ degree of freedom has a higher value than
+$\Robject{zSco}^2$.
 
-We plot the zScores of original data set against the zScores of the
+We plot the z scores of original data set against the z scores of the
 combined data set. We see a good correlation so the combination of the two
 data sets works quite well. In the next paragraph we want to see how big the
 benefit of combining data sets really is.
@@ -308,14 +321,14 @@ genes that have a higher effect size than the threshold for the combined
 effect $z$, but not for any of the experiment specific effects $z_i$, e.g. we
 look for genes with 
 \begin{eqnarray*}
-z \geq z_{th} \mbox{ and } \sum_{i=1}^k I(z_i \geq z_{th} = 0 \mbox{ for }
+z & \geq &z_{th} \mbox{ and } \sum_{i=1}^k I(z_i \geq z_{th}) = 0 \mbox{ for }
 z > 0 \mbox{ or }\\
- z \leq -z_{th} \mbox{ and } \sum_{i=1}^k I(z_i \leq - z_{th} = 0 \mbox{ for }
+ z & \leq &-z_{th} \mbox{ and } \sum_{i=1}^k I(z_i \leq - z_{th}) = 0 \mbox{ for }
 z < 0 
 \end{eqnarray*}
 The IDR was computed for $ z> 0$ (blue) and $z < 0 $ (red) separately. We can
-see that we really gain much by combing the sets. 
-<<IDRplot,fig=TRUE,results=hide>>=
+see that we get higher z scores by combing the sets.  
+<<IDRplot,fig=TRUE,eps=FALSE,results=hide>>=
 IDRplot(theScores,Combine=1:2,colPos="blue", colNeg="red")
 @
 
@@ -324,12 +337,11 @@ IDRplot(theScores,Combine=1:2,colPos="blue", colNeg="red")
 
 Next \citet{Choi.2003} discussed using a SAM \citep{Tusher.2001} type
 analysis to estimate the false discovery rate(FDR). This is implemented in the
-function zscoresFDR.
+function \Rfunction{zscoresFDR}.
 
 
 <<calculationAllinOne,results=hide>>=
-ScoresFDR <- zScoreFDR(esets, classes,useREM=FALSE, numberOfPermutations=20,
-                         CombineExp=1:2)
+ScoresFDR <- zScoreFDR(esets, classes, useREM=FALSE, numberOfPermutations=100,CombineExp=1:2)
 @
 
 This object is a list with three slots
@@ -340,19 +352,21 @@ names(ScoresFDR)
 
 The first slot stores the results of the calculation, if the FDR is computed
 for the  positive scores, the second for the negative scores and the last one for the
-tow sided situation. Each slot contains a matrix with the values from zScores and additional FDR's
+tow sided situation (i.e. we look at the absolute values of the z scores). 
+Each slot contains a matrix with the values obtained by zScores and additional
+a FDR for each experiment and the combination of experiments.
 
 <<showSet>>=
-ScoresFDR[[1]][1:2,]
+ScoresFDR$pos[1:2,]
 @
 
 We plot the number of genes and the corresponding FDR. Here the result for the
-combined set is red and for the result for the original set is blue. We
-extract the FDR for the two sided case (taking the absolute values of the z
-scores). It can be see that the combined data set has a lower FDR than the
-splits but a higher FDR that the original set. 
+combined set is red and for the result for the original set (without
+splitting) is blue. We
+extract the FDR for the two sided situation. It can be see that the combined
+data set has a lower FDR than the splits and a FDR as good as the original set.  
 
-<<aa>>=
+<<gettingFDR>>=
 FDRwholeSettwo <- sort(ScoresFDR$"two.sided"[,"FDR"])
 experimentstwo <- list()
 for(j in 1:3){
@@ -371,45 +385,31 @@ theNewC <- brewer.pal(3,"Set2")
 #two sided z values #
 #                   #
 #####################
-#par(mfrow=c(1,2))
-
-##100 and 500 
-#for (k in c(100,500)){
-#plot(FDRwholeSettwo,pch="*",col="red",ylab="FDR",xlab="Number of genes",xlim=range(0,k))
-#for(j in 1:3)
-#points(experimentstwo[[j]],pch="*", col=theNewC[j])
-#}
-#
-# all
 
 plot(FDRwholeSettwo,pch="*",col="red",ylab="FDR",xlab="Number of genes")
 for(j in 1:3)
 points(experimentstwo[[j]],pch="*", col=theNewC[j])
-
-## the legend 
-#plot(0:1,0:1,type="n",axes=FALSE,xlab="",ylab="")
 legend(4000,0.4,c("Combined set","Split 1" , "Split 2" ,"original set"), c("red",theNewC[1:3]))
-
-
-#},"FDRtwo.pdf",w=10,h=10)
 @
 
 If we are more interested in the number of gene that are below a given
 threshold for the FDR we can use the \Rfunction{CountPlot}. 
-Similar to the \Rfunction{IDRplot}
-it shows the following: for each study (indicated by different colors) and various thresholds for the FDR (x axis) the number of
-genes that are below this threshold in the given study but above in all other
-studies are shown (y axis). The experiment colors for this plot are the same
-as in the plots before. Here again we exclude the original experiment (like in
-the IDR plot).
+Similar to \Rfunction{IDRplot} it shows the following: for each study
+(indicated by different colors) and various thresholds for the FDR (x axis)
+the number of genes that are below this threshold in the given study but above in all other
+studies are shown (y axis). The studies that should be considered (apart from
+the combined set that is always present) can be specified with
+\Robject{CombineExp}. Here we compare the original data set (green)
+against the combined data set (red). It can be seen that we do quite well.
 
-<<theFDRplots,results=hide,fig=TRUE>>=
-par(mfrow=c(2,2))
-CountPlot(ScoresFDR,Score="FDR",kindof="neg",cols=c("red",theNewC),
-	main="Negative FDR", xlab="FDR threshold", ylab="Number of genes",Combine=1:2)
-CountPlot(ScoresFDR,Score="FDR",cols=c("red",theNewC),kindof="pos",
-main="Positive FDR", xlab="FDR threshold", ylab="Number of genes",Combine=1:2)
-CountPlot(ScoresFDR,Score="FDR",kindof="two.sided",cols=c("red",theNewC),main="two sided FDR", xlab="FDR threshold",ylab="Number of genes",Combine=1:2)
+
+<<theFDRplots,results=hide,fig=TRUE,eps=FALSE>>=
+#par(mfrow=c(2,2))
+#CountPlot(ScoresFDR,Score="FDR",kindof="neg",cols=c("red",theNewC),
+#	main="Negative FDR", xlab="FDR threshold", ylab="Number of genes",CombineExp=1:2)
+#CountPlot(ScoresFDR,Score="FDR",cols=c("red",theNewC),kindof="pos",
+#main="Positive FDR", xlab="FDR threshold", ylab="Number of genes",Combine=1:2)
+CountPlot(ScoresFDR,Score="FDR",kindof="two.sided",cols=c("red",theNewC),main="two sided FDR", xlab="FDR threshold",ylab="Number of genes",CombineExp=3)
 @
 
 
