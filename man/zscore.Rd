@@ -64,8 +64,8 @@ Split1     <- Nevins[,rrr]
 Split2     <- Nevins[,-rrr]
 
 #obtain classes
-Split1.ER <-as.numeric(as.factor(Split1$ER.status))-1
-Split2.ER <-as.numeric(as.factor(Split2$ER.status))-1
+Split1.ER <- as.numeric(Split1$ER.status)-1
+Split2.ER <-as.numeric(Split2$ER.status)-1
 
 esets     <- list(Split1,Split2)
 classes   <- list(Split1.ER,Split2.ER)
