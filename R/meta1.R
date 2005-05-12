@@ -82,7 +82,7 @@ var.tau2<-function(my.vars.new){
 
 
 zScorePermuted <- function(esets,classes,useREM=TRUE,CombineExp=1:length(esets)){
-  return(zScores(esets,lapply(classes,sample),useREM,CombineExp=CombineExp)[,"zSco"])
+  zScores(esets,lapply(classes,sample),useREM,CombineExp=CombineExp)[,"zSco"]
 }
 
 
@@ -105,17 +105,18 @@ zScores <- function(esets, classes, useREM=TRUE,CombineExp=1:length(esets)){
  for(i in 2:num.studies)
    stopifnot( identical(theNames,geneNames(esets[[i]])))
  
- ds            <- matrix(NA,ncol=num.studies,nrow=num.genes)
- vars          <- matrix(NA,ncol=num.studies,nrow=num.genes)
+ ds <- matrix(NA,ncol=num.studies,nrow=num.genes)
+ vars <- matrix(NA,ncol=num.studies,nrow=num.genes)
  for (i in 1:length(esets)){
-   my.d.adj    <- dstar(getdF(esets[[i]],classes[[i]]),length(classes[[i]]))
-   ds[,i]      <- as.numeric(my.d.adj)
-   vars[,i]    <- as.numeric(sigmad(my.d.adj,sum(classes[[i]]==0),sum(classes[[i]]==1)))
-  }
+   my.d.adj <- dstar(getdF(esets[[i]],classes[[i]]),length(classes[[i]]))
+   ds[,i] <- as.numeric(my.d.adj)
+   vars[,i] <- as.numeric(sigmad(my.d.adj,sum(classes[[i]]==0),
+		    	sum(classes[[i]]==1)))
+ }
  # the zscore for each experiment itself
- sepZscores           <- ds / sqrt(vars)
- effects              <- ds
- effectsVar           <- vars
+ sepZscores <- ds / sqrt(vars)
+ effects <- ds
+ effectsVar <- vars
  colnames(sepZscores) <- paste("zSco_Ex_",1:num.studies,sep="")
  colnames(effects)    <- paste("Effect_Ex_",1:num.studies,sep="")
  colnames(effectsVar) <- paste("EffectVar_Ex_",1:num.studies,sep="")
@@ -140,7 +141,8 @@ zScores <- function(esets, classes, useREM=TRUE,CombineExp=1:length(esets)){
  zSco      <- MUvals/MUsds
  Qpvalues  <- 1 - pchisq(Qvals, df)
  Chisq     <- 1 - pchisq(zSco^2,1)
- theResult <- cbind(sepZscores,zSco,MUvals,MUsds,Qvals,df,Qpvalues,Chisq,effects,effectsVar)
+ theResult <- cbind(sepZscores, zSco, MUvals, MUsds, Qvals, df, Qpvalues,
+                     Chisq, effects, effectsVar)
  rownames(theResult) <-  theNames
  return(theResult)
 }
@@ -193,7 +195,8 @@ return(theFDR)
 #computed for each single experiment and for the combined experiment.
 #####################################################
 
-zScoreFDR <- function(esets,classes,useREM=TRUE,numberOfPermutations=1000,CombineExp=1:length(esets)){
+zScoreFDR <- function(esets,classes,useREM=TRUE, nperm=1000,
+ CombineExp=1:length(esets)){
 ## compute zScores 
  num.studies <- length(esets)
  num.genes   <- nrow(exprs(esets[[1]]))
@@ -202,7 +205,7 @@ zScoreFDR <- function(esets,classes,useREM=TRUE,numberOfPermutations=1000,Combin
  zscore      <- zscoresAll[,c(paste("zSco_Ex_",1:num.studies,sep=""),"zSco")]
 
 # compute zscores with random permutations
- aperms <-replicate(numberOfPermutations,
+ aperms <-replicate(nperm,
                     zScores(esets,lapply(classes,sample),useREM,CombineExp=CombineExp)[,c(paste("zSco_Ex_",1:num.studies,sep=""),"zSco")],
                     simplify=FALSE)
   
