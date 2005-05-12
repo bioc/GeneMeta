@@ -40,8 +40,6 @@ sigmad(d, ng1, ng2)
   modeling interstudy variation. Bioinformatics, 2003, i84-i90. }
 \author{L. Lusa, R. Gray and R. Gentleman}
 
-\seealso{}
-
 \examples{
   
   x = matrix(rnorm(1000), nc=10)

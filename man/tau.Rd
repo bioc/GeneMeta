@@ -4,7 +4,8 @@
 \alias{tau2.DL}
 \title{estimating my and tau in a REM}
 \description{
-tau2.DL is an estimation of tau in a REm using Cochran's Q statistic}
+tau2.DL is an estimation of tau in a random effects model (REM) using 
+Cochran's Q statistic}
 }
 \usage{
 tau2.DL(Q, num.studies, my.weights)
@@ -12,11 +13,14 @@ mu.tau2(my.d, my.vars.new)
 var.tau2(my.vars.new)
 }
 \arguments{
-  \item{Q}{vector of Cochran's Q statistics}
-  \item{num.studies}{number of studies used for the meta analysis}
-  \item{my.weights}{matrix with one colum for each experiment- variances of the effects that should be combined}
-  \item{my.d}{matrix with one colum for each experiment- effects that should be combined}
-  \item{my.vars.new}{matrix with one colum for each experiment- variances of the effects that should be combined}
+  \item{Q}{A vector of Cochran's Q statistics.}
+  \item{num.studies}{The number of studies used for the meta-analysis.}
+  \item{my.weights}{A matrix with one column for each experiment containing the
+  variances of the effects that should be combined.}
+  \item{my.d}{A matrix, with one column for each experiment, containing
+     the effects that should be combined.}
+  \item{my.vars.new}{A matrix, with one column for each experiment, containing 
+        the variances of the effects that should be combined.}
 }
 \details{}
 \value{}
@@ -27,6 +31,6 @@ var.tau2(my.vars.new)
 \seealso{\code{\link{dstar}},\code{\link{sigmad}}}
 
 \examples{
-# please hav a look at the vignette
+# please have a look at the vignette
 }
-\keyword{}
+\keyword{htest}
