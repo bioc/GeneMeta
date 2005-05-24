@@ -33,11 +33,13 @@ multExpFDR(theScores, thePermScores, type="pos")
 }
 \value{A \code{matrix} with one row for each probe(set) and the 
 following columns: 
- \item{zSco_Ex_}{For each single experiment the standardized mean difference divided by the estimated standard deviation}
+ \item{zSco_Ex_}{For each single experiment the standardized mean difference, 
+\code{Effect_Ex_}, divided by the estimated standard deviation,
+ the square root of the \code{EffectVar_Ex_} column.}
  \item{MUvals}{The combined standardized mean difference (using  a FEM or REM)}
- \item{zSco}{The z statistic - the \code{MUvals} divided by their standard 
- deviations.}
  \item{MUsds}{The standard deviation of the \code{MUvals}.}
+ \item{zSco}{The z statistic - the \code{MUvals} divided by their standard 
+ deviations, \code{MUsds}.}
  \item{Qvals}{Cochran's Q statistic for each gene.}
  \item{df}{The degree of freedom for the Chisquare distribution. 
 This is equal to the number of combined experiments minus one.}
