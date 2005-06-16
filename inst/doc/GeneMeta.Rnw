@@ -2,6 +2,7 @@
 % likely to be overwritten.
 % \VignetteIndexEntry{GeneMeta Vignette}
 % \VignetteKeywords{meta analysis, combining data}
+%\VignettePackage{GeneMeta}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{article}
@@ -183,7 +184,7 @@ hist(my.Q,breaks=50,col="red")
 
 We can see immediately from the histogram and the mean of the $Q$ values
 that the hypothesis that these values come from a $\chi^2_1$ random
-variable seems to be valid. 
+variable seems to be valid.
 
 <<grapics,fig=TRUE>>=
 ########### graphics ################
@@ -256,14 +257,14 @@ abline(0,1,col="red")
 
 We do not see much difference here. This is because in the REM model for most
 of the genes the variance $\tau$ is estimated as zero.
- 
+
 <<theTau,fig=TRUE>>=
 hist(my.tau2.DL,col="red",breaks=50,main="Histogram of tau")
 @
 
 The procedure described above is also implemented in the function
 \Rfunction{zScores} (part of this package) and \Rfunction{meta.summaries} from the package
-\Rpackage{rmeta}. While \Rfunction{meta.summaries} do the calculation for 
+\Rpackage{rmeta}. While \Rfunction{meta.summaries} do the calculation for
 arbitrary effects and their variances, \Rfunction{zScores} exactly follows the
 calculation from \citet{Choi.2003}. The arguments of this function are a list of expression sets and a list of classes. We
 include our two splits and also the original data set. By  default
@@ -319,15 +320,15 @@ We now will have a look at the IDR plot as it is described in
 \citep{Choi.2003}. For a threshold $z_th$ this plot shows the fraction of the
 genes that have a higher effect size than the threshold for the combined
 effect $z$, but not for any of the experiment specific effects $z_i$, e.g. we
-look for genes with 
+look for genes with
 \begin{eqnarray*}
 z & \geq &z_{th} \mbox{ and } \sum_{i=1}^k I(z_i \geq z_{th}) = 0 \mbox{ for }
 z > 0 \mbox{ or }\\
  z & \leq &-z_{th} \mbox{ and } \sum_{i=1}^k I(z_i \leq - z_{th}) = 0 \mbox{ for }
-z < 0 
+z < 0
 \end{eqnarray*}
 The IDR was computed for $ z> 0$ (blue) and $z < 0 $ (red) separately. We can
-see that we get higher z scores by combing the sets.  
+see that we get higher z scores by combing the sets.
 <<IDRplot,fig=TRUE,eps=FALSE,results=hide>>=
 IDRplot(theScores,Combine=1:2,colPos="blue", colNeg="red")
 @
@@ -352,7 +353,7 @@ names(ScoresFDR)
 
 The first slot stores the results of the calculation, if the FDR is computed
 for the  positive scores, the second for the negative scores and the last one for the
-tow sided situation (i.e. we look at the absolute values of the z scores). 
+tow sided situation (i.e. we look at the absolute values of the z scores).
 Each slot contains a matrix with the values obtained by zScores and additional
 a FDR for each experiment and the combination of experiments.
 
@@ -364,7 +365,7 @@ We plot the number of genes and the corresponding FDR. Here the result for the
 combined set is red and for the result for the original set (without
 splitting) is blue. We
 extract the FDR for the two sided situation. It can be see that the combined
-data set has a lower FDR than the splits and a FDR as good as the original set.  
+data set has a lower FDR than the splits and a FDR as good as the original set.
 
 <<gettingFDR>>=
 FDRwholeSettwo <- sort(ScoresFDR$"two.sided"[,"FDR"])
@@ -393,7 +394,7 @@ legend(4000,0.4,c("Combined set","Split 1" , "Split 2" ,"original set"), c("red"
 @
 
 If we are more interested in the number of gene that are below a given
-threshold for the FDR we can use the \Rfunction{CountPlot}. 
+threshold for the FDR we can use the \Rfunction{CountPlot}.
 Similar to \Rfunction{IDRplot} it shows the following: for each study
 (indicated by different colors) and various thresholds for the FDR (x axis)
 the number of genes that are below this threshold in the given study but above in all other
@@ -433,7 +434,7 @@ CountPlot(ScoresFDR,Score="FDR",kindof="two.sided",cols=c("red",theNewC),main="t
 \newblock\textit{PNAS} 98:5116--5121 (2001).
 
 
- 
+
 \end{thebibliography}
 
 
