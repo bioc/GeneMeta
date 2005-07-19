@@ -16,7 +16,10 @@ multExpFDR(theScores, thePermScores, type="pos")
 }
 \arguments{
   \item{esets}{A list of expression sets, one expression set per experiment. All experiments must have the same variables(genes)}
-  \item{classes}{A list of class memberships, one per experiment. Each list can only contain 0 and 1. }
+  %%\item{classes}{A list of class memberships, one per experiment. Each list can only contain 0 and 1. }
+  \item{classes}{A list of class memberships, one per experiment. Each
+    list can only contain 2 levels. }
+  %%\item{classes}{A factor of class memberships.  The factor must only  contain 2 levels.}
   \item{useREM}{A logical value indicating whether or not to use a REM, \code{TRUE}, or a FEM, \code{FALSE} for combining the zScores.}
   \item{theScores}{A vector of scores (e.g. t-statistics or z Scores)}
   \item{thePermScores}{vector of permuted scores (e.g. t-statistics or z Scores)}

@@ -82,6 +82,23 @@ var.tau2<-function(my.vars.new){
 
 
 zScorePermuted <- function(esets,classes,useREM=TRUE,CombineExp=1:length(esets)){
+ ## check and convert "classes"
+ if(length(classes)!=2) {
+     stop("Error: Only 2 experiments are allowed.")
+ }else{
+     for(i in 1:2) {
+         if(!is.factor(classes[[i]])) {
+             classes[[i]] <- factor(classes[[i]])
+         }
+         if(nlevels(classes[[i]])!=2) {
+             stop("Error: Each list in the argument \"classes\" must contain only 2 levels.")
+         }else{
+             classesLevels <- levels(classes[[i]])
+             classes[[i]] <- sapply(classes[[i]], function(x) ifelse(x==classesLevels[1],0,1))
+         }
+     }
+ }
+    
   zScores(esets,lapply(classes,sample),useREM,CombineExp=CombineExp)[,"zSco"]
 }
 
@@ -91,7 +108,25 @@ zScorePermuted <- function(esets,classes,useREM=TRUE,CombineExp=1:length(esets))
 zScores <- function(esets, classes, useREM=TRUE,CombineExp=1:length(esets)){
  num.studies   <- length(esets)
  num.genes     <- nrow(exprs(esets[[1]]))
+
+ ## check and convert "classes"
+ if(length(classes)!=2) {
+     stop("Error: Only 2 experiments are allowed.")
+ }else{
+     for(i in 1:2) {
+         if(!is.factor(classes[[i]])) {
+             classes[[i]] <- factor(classes[[i]])
+         }
+         if(nlevels(classes[[i]])!=2) {
+             stop("Error: Each list in the argument \"classes\" must contain only 2 levels.")
+         }else{
+             classesLevels <- levels(classes[[i]])
+             classes[[i]] <- sapply(classes[[i]], function(x) ifelse(x==classesLevels[1],0,1))
+         }
+     }
+ }
  
+
   tau2 <- function (Q, num.studies, my.weights){
    n    <- rep(0, length(Q)) 
    vwts <- rowSums(my.weights)
@@ -197,6 +232,24 @@ return(theFDR)
 
 zScoreFDR <- function(esets,classes,useREM=TRUE, nperm=1000,
  CombineExp=1:length(esets)){
+
+    ## check and convert "classes"
+    if(length(classes)!=2) {
+        stop("Error: Only 2 experiments are allowed.")
+    }else{
+        for(i in 1:2) {
+            if(!is.factor(classes[[i]])) {
+                classes[[i]] <- factor(classes[[i]])
+            }
+            if(nlevels(classes[[i]])!=2) {
+                stop("Error: Each list in the argument \"classes\" must contain only 2 levels.")
+            }else{
+                classesLevels <- levels(classes[[i]])
+                classes[[i]] <- sapply(classes[[i]], function(x) ifelse(x==classesLevels[1],0,1))
+            }
+        }
+    }
+    
 ## compute zScores 
  num.studies <- length(esets)
  num.genes   <- nrow(exprs(esets[[1]]))
