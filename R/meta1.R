@@ -126,12 +126,10 @@ zScores <- function(esets, classes, useREM=TRUE,CombineExp=1:length(esets)){
      }
  }
  
-
-  tau2 <- function (Q, num.studies, my.weights){
-   n    <- rep(0, length(Q)) 
+  tau2 <- function (Q, num.studies, my.weights){ 
    vwts <- rowSums(my.weights)
    tmp2 <- rowSums(my.weights^2)
-   tau2 <- mapply(max, n, (Q - (num.studies-1))/(vwts - tmp2/vwts))
+   tau2 <- pmax(0, (Q - (num.studies-1))/(vwts - tmp2/vwts))
    return(tau2) 
   }
  
