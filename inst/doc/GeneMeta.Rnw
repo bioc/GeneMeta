@@ -126,7 +126,7 @@ Split1     <- Nevins[,rrr]
 Split2     <- Nevins[,-rrr]
 @
 For each data set (Split1 and Split2) we extract the estrogen receptor (ER) status and
-code it as a (0,1) factor.
+code it as a 0-1 vector.
 
 <<phenoData>>=
 #obtain classes
@@ -342,7 +342,7 @@ function \Rfunction{zscoresFDR}.
 
 
 <<calculationAllinOne,results=hide>>=
-ScoresFDR <- zScoreFDR(esets, classes, useREM=FALSE, nperm=100,CombineExp=1:2)
+ScoresFDR <- zScoreFDR(esets, classes, useREM=FALSE, nperm=50,CombineExp=1:2)
 @
 
 This object is a list with three slots

@@ -9,9 +9,9 @@
   FEM and REM and computing FDR.
 }
 \usage{
-zScores(esets, classes, useREM=TRUE, CombineExp=1:length(esets)))
+zScores(esets, classes, useREM=TRUE, CombineExp=1:length(esets))
 zScorePermuted(esets, classes, useREM=TRUE, CombineExp=1:length(esets))
-zScoreFDR(esets, classes, useREM=TRUE, nperm=1000, CombineExp=1:length(esets)))
+zScoreFDR(esets, classes, useREM=TRUE, nperm=1000, CombineExp=1:length(esets))
 multExpFDR(theScores, thePermScores, type="pos")
 }
 \arguments{

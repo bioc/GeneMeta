@@ -82,24 +82,20 @@ var.tau2<-function(my.vars.new){
 
 
 zScorePermuted <- function(esets,classes,useREM=TRUE,CombineExp=1:length(esets)){
- ## check and convert "classes"
- if(length(classes)!=2) {
-     stop("Error: Only 2 experiments are allowed.")
- }else{
-     for(i in 1:2) {
-         if(!is.factor(classes[[i]])) {
-             classes[[i]] <- factor(classes[[i]])
-         }
-         if(nlevels(classes[[i]])!=2) {
-             stop("Error: Each list in the argument \"classes\" must contain only 2 levels.")
-         }else{
-             classesLevels <- levels(classes[[i]])
-             classes[[i]] <- sapply(classes[[i]], function(x) ifelse(x==classesLevels[1],0,1))
-         }
+  ## check and convert "classes"
+ for(i in 1:length(classes)) {
+  if(!is.factor(classes[[i]])) {
+     classes[[i]] <- factor(classes[[i]])
+     }
+     if(nlevels(classes[[i]])!=2) {
+      stop("Error: Each list in the argument \"classes\" must contain only 2 levels.")
+     }else{
+      Ref <- levels(classes[[i]])[1] 
+      classes[[i]] <- sapply(classes[[i]], function(x) ifelse(x==Ref, 0,1)) 
      }
  }
-    
-  zScores(esets,lapply(classes,sample),useREM,CombineExp=CombineExp)[,"zSco"]
+  
+ zScores(esets,lapply(classes,sample),useREM,CombineExp=CombineExp)[,"zSco"]
 }
 
 
@@ -107,24 +103,25 @@ zScorePermuted <- function(esets,classes,useREM=TRUE,CombineExp=1:length(esets))
 
 zScores <- function(esets, classes, useREM=TRUE,CombineExp=1:length(esets)){
  num.studies   <- length(esets)
+ 
  num.genes     <- nrow(exprs(esets[[1]]))
 
  ## check and convert "classes"
- if(length(classes)!=2) {
-     stop("Error: Only 2 experiments are allowed.")
- }else{
-     for(i in 1:2) {
-         if(!is.factor(classes[[i]])) {
-             classes[[i]] <- factor(classes[[i]])
-         }
-         if(nlevels(classes[[i]])!=2) {
-             stop("Error: Each list in the argument \"classes\" must contain only 2 levels.")
-         }else{
-             classesLevels <- levels(classes[[i]])
-             classes[[i]] <- sapply(classes[[i]], function(x) ifelse(x==classesLevels[1],0,1))
-         }
+ if (num.studies != length(classes))
+   stop ("Length of classes must be equal to length of esets.")
+ 
+ for(i in 1:num.studies) {
+  if(!is.factor(classes[[i]])) {
+     classes[[i]] <- factor(classes[[i]])
+     }
+     if(nlevels(classes[[i]])!=2) {
+      stop("Error: Each list in the argument \"classes\" must contain only 2 levels.")
+     }else{
+       Ref <- levels(classes[[i]])[1] 
+      classes[[i]] <- sapply(classes[[i]], function(x) ifelse(x==Ref, 0,1)) 
      }
  }
+ 
  
   tau2 <- function (Q, num.studies, my.weights){ 
    vwts <- rowSums(my.weights)
@@ -223,31 +220,28 @@ return(theFDR)
 }
 
 #####################################################
-# This function computes a FDR for each gene. It also computes zScores, both
-#for the combines experiment and for each single experiment. The FDR is also
-#computed for each single experiment and for the combined experiment.
+# This function computes a FDR for each gene in each single experiment and in
+# the combined experiment.. It also computes zScores, both
+# for the combined experiment and for each single experiment.
 #####################################################
 
-zScoreFDR <- function(esets,classes,useREM=TRUE, nperm=1000,
- CombineExp=1:length(esets)){
+zScoreFDR <- function(esets,classes,useREM=TRUE, nperm=1000,CombineExp=1:length(esets)){
 
-    ## check and convert "classes"
-    if(length(classes)!=2) {
-        stop("Error: Only 2 experiments are allowed.")
-    }else{
-        for(i in 1:2) {
-            if(!is.factor(classes[[i]])) {
-                classes[[i]] <- factor(classes[[i]])
-            }
-            if(nlevels(classes[[i]])!=2) {
-                stop("Error: Each list in the argument \"classes\" must contain only 2 levels.")
-            }else{
-                classesLevels <- levels(classes[[i]])
-                classes[[i]] <- sapply(classes[[i]], function(x) ifelse(x==classesLevels[1],0,1))
-            }
-        }
-    }
-    
+## check and convert "classes"
+  
+for(i in 1:length(classes)) {
+  if(!is.factor(classes[[i]])) {
+     classes[[i]] <- factor(classes[[i]])
+     }
+     if(nlevels(classes[[i]])!=2) {
+      stop("Error: Each list in the argument \"classes\" must contain only 2 levels.")
+     }else{
+      Ref <- levels(classes[[i]])[1] 
+      classes[[i]] <- sapply(classes[[i]], function(x) ifelse(x==Ref, 0,1))     
+     }
+ }
+
+
 ## compute zScores 
  num.studies <- length(esets)
  num.genes   <- nrow(exprs(esets[[1]]))
@@ -257,10 +251,14 @@ zScoreFDR <- function(esets,classes,useREM=TRUE, nperm=1000,
 
 # compute zscores with random permutations
  aperms <-replicate(nperm,
-                    zScores(esets,lapply(classes,sample),useREM,CombineExp=CombineExp)[,c(paste("zSco_Ex_",1:num.studies,sep=""),"zSco")],
+                    zScores(esets,
+                            lapply(classes,sample),
+                            useREM,
+                            CombineExp=CombineExp)[,c(paste("zSco_Ex_",1:num.studies,sep=""),"zSco")],
                     simplify=FALSE)
   
 ## using multExpFDR to compute FDR for positive, negative and two sided case
+    
 k   <- c("pos","neg","two.sided")
 All <- vector(mode="list",length=3)
  for(l in 1:length(k)){
