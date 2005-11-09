@@ -1,0 +1,4 @@
+
+exportMethods(getdF)
+
+export(CountPlot, dstar, f.Q, IDRplot, multExpFDR, mu.tau2, sigmad, tau2.DL, var.tau2, zScoreFDR, zScorePermuted, zScores)
