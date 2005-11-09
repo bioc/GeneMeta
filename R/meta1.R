@@ -3,8 +3,7 @@
 ############ Lara Lusa, lusa@ifom-firc.it
 ############ Markus Ruschhaupt
 
-if( !isGeneric("getdF") )
-    setGeneric("getdF", function(data, categ) standardGeneric("getdF"))
+setGeneric("getdF", function(data, categ) standardGeneric("getdF"))
 
 #function to get d, uses t.test for each gene
 
