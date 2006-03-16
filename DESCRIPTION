@@ -4,7 +4,7 @@ Version: 1.3.0
 Author: Lara Lusa <lusa@ifom-firc.it>, R. Gentleman, M. Ruschhaupt
 Description: A collection of meta-analysis tools for analysing high
         throughput experimental data
-Maintainer: R. Gentleman <rgentlem@fhcrc.org>
+Maintainer: Biocore Team <biocpkgs@lists.fhcrc.org>
 License: Artistic
 Depends: R (>= 1.9), methods, Biobase
 SaveImage: yes
