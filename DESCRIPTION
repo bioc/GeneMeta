@@ -8,4 +8,5 @@ Maintainer: Biocore Team <biocpkgs@lists.fhcrc.org>
 License: Artistic
 Depends: R (>= 1.9), methods, Biobase
 SaveImage: yes
+biocViews: Statistics
 
