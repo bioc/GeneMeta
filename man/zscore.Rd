@@ -30,9 +30,13 @@ multExpFDR(theScores, thePermScores, type="pos")
 \details{The function \code{zScores} implements the approach of Choi et
   al. for for a set of exprSets. The function \code{zScorePermuted} applies
 \code{zScore} to a single permutation of the class labels.
-  The function \code{zScoreFDR} computes a FDR for each gene. It also
+  The function \code{zScoreFDR} computes a FDR for each gene, both for each
+  single experiment and for the combined experiment. The
+  FDR is calculated as described in Choi et al. Up to now ties in the
+  zscores are not taken into account in the calculation. The function might produce
+  incorrect results in that case. The function also
   computes zScores, both for the combines experiment and for each single
-  experiment. The FDR is also computed for each single experiment and for the combined experiment.
+  experiment.
 }
 \value{A \code{matrix} with one row for each probe(set) and the 
 following columns: 
@@ -59,7 +63,7 @@ for each experiment that is being analyzed.
 }
 \references{Choi et al, Combining multiple microarray studies and
   modeling interstudy variation. Bioinformatics, 2003, i84-i90. }
-\author{M.Ruschhaupt}
+\author{M. Ruschhaupt}
 \examples{
 data(Nevins)
 ##Splitting 
