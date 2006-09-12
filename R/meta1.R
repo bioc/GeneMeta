@@ -9,7 +9,6 @@ setGeneric("getdF", function(data, categ) standardGeneric("getdF"))
 
 setMethod("getdF", c("exprSet", "numeric"), 
    function(data, categ) {
-    require(genefilter)
     cl1 = which(categ == 1)
     s1  = length(cl1)
     cl2 = which(categ == 0)
@@ -20,7 +19,6 @@ setMethod("getdF", c("exprSet", "numeric"),
 
 setMethod("getdF", c("matrix", "numeric"),
    function(data, categ) {
-    require(genefilter)
     cl1 = which(categ == 1)
     s1  = length(cl1)
     cl2 = which(categ == 0)
@@ -345,3 +343,7 @@ plot   (posszTh,result[[1]],type=type,col=cols[1],pch=pch,ylab=ylab,xlab=xlab,yl
 for(k in 2:(n.studies))  
 points (posszTh,result[[k]],type=type,col=cols[k],pch=pch)
 }
+
+
+.onLoad <- function(libname, pkgname) require("methods")
+
