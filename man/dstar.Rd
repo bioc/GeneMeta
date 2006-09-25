@@ -3,6 +3,7 @@
 \alias{sigmad}
 \alias{getdF}
 \alias{getdF,exprSet,numeric-method}
+\alias{getdF,ExpressionSet,numeric-method}
 \alias{getdF,matrix,numeric-method}
 \title{ Tools for Meta-analysis of gene expression data. }
 \description{

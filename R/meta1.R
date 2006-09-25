@@ -7,26 +7,29 @@ setGeneric("getdF", function(data, categ) standardGeneric("getdF"))
 
 #function to get d, uses t.test for each gene
 
+setMethod("getdF", c("ExpressionSet", "numeric"), 
+   function(data, categ) {
+       getdF_matrix(exprs(data), categ)
+})
+
 setMethod("getdF", c("exprSet", "numeric"), 
    function(data, categ) {
-    cl1 = which(categ == 1)
-    s1  = length(cl1)
-    cl2 = which(categ == 0)
-    s2  = length(cl2)
-    a <- rowttests(data, factor(categ))$statistic
-    return(a * sqrt((s1+s2)/(s1*s2)))
+       getdF_matrix(exprs(data), categ)
 })
 
 setMethod("getdF", c("matrix", "numeric"),
    function(data, categ) {
+       getdF_matrix(data, categ)
+})
+
+getdF_matrix <- function(data, categ) {
     cl1 = which(categ == 1)
     s1  = length(cl1)
     cl2 = which(categ == 0)
     s2  = length(cl2)
     a <- rowttests(data, factor(categ))$statistic
     return(a * sqrt((s1+s2)/(s1*s2)))
-})
-
+}
 
 #unbiased estimate of d
 dstar<-function (d, n)
