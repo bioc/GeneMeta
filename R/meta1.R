@@ -14,6 +14,7 @@ setMethod("getdF", c("ExpressionSet", "numeric"),
 
 setMethod("getdF", c("exprSet", "numeric"), 
    function(data, categ) {
+       .Deprecated(msg=Biobase:::EXPRSET_DEPR_MSG)
        getdF_matrix(exprs(data), categ)
 })
 
