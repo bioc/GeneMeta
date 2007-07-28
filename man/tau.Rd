@@ -5,7 +5,7 @@
 \title{estimating my and tau in a REM}
 \description{
 tau2.DL is an estimation of tau in a random effects model (REM) using 
-Cochran's Q statistic}
+Cochran's Q statistic.
 }
 \usage{
 tau2.DL(Q, num.studies, my.weights)

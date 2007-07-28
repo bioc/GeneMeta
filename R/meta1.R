@@ -131,10 +131,10 @@ zScores <- function(esets, classes, useREM=TRUE,CombineExp=1:length(esets)){
    return(tau2) 
   }
  
- # check if the geneNames are the same for all esets
- theNames <- geneNames(esets[[1]])
+ # check if the featureNames are the same for all ExpressionSets
+ theNames <- featureNames(esets[[1]])
  for(i in 2:num.studies)
-   stopifnot( identical(theNames,geneNames(esets[[i]])))
+   stopifnot( identical(theNames,featureNames(esets[[i]])))
  
  ds <- matrix(NA,ncol=num.studies,nrow=num.genes)
  vars <- matrix(NA,ncol=num.studies,nrow=num.genes)
