@@ -6,8 +6,8 @@ Description: A collection of meta-analysis tools for analysing high
         throughput experimental data
 Maintainer: Biocore Team <biocpkgs@lists.fhcrc.org>
 License: Artistic License, Version 2.0
-Depends: R (>= 2.4), methods, Biobase (>= 1.11.34), genefilter
-Imports: methods, Biobase (>= 1.11.34)
+Depends: R (>= 2.5.0), methods, Biobase (>= 1.15.23), genefilter
+Imports: methods, Biobase (>= 1.15.23)
 LazyLoad: yes
 biocViews: Statistics
 
