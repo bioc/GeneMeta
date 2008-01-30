@@ -5,7 +5,7 @@ Author: Lara Lusa <lusa@ifom-firc.it>, R. Gentleman, M. Ruschhaupt
 Description: A collection of meta-analysis tools for analysing high
         throughput experimental data
 Maintainer: Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>
-License: Artistic License, Version 2.0
+License: Artistic-2.0
 Depends: R (>= 2.5.0), methods, Biobase (>= 1.15.23), genefilter
 Imports: methods, Biobase (>= 1.15.23)
 LazyLoad: yes
