@@ -12,12 +12,6 @@ setMethod("getdF", c("ExpressionSet", "numeric"),
        getdF_matrix(exprs(data), categ)
 })
 
-setMethod("getdF", c("exprSet", "numeric"), 
-   function(data, categ) {
-       .Deprecated(msg=Biobase:::EXPRSET_DEPR_MSG)
-       getdF_matrix(exprs(data), categ)
-})
-
 setMethod("getdF", c("matrix", "numeric"),
    function(data, categ) {
        getdF_matrix(data, categ)
