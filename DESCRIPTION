@@ -1,6 +1,6 @@
 Package: GeneMeta
 Title: MetaAnalysis for High Throughput Experiments
-Version: 1.12.0
+Version: 1.13.0
 Author: Lara Lusa <lusa@ifom-firc.it>, R. Gentleman, M. Ruschhaupt
 Description: A collection of meta-analysis tools for analysing high
         throughput experimental data
