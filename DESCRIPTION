@@ -1,6 +1,6 @@
 Package: GeneMeta
 Title: MetaAnalysis for High Throughput Experiments
-Version: 1.30.0
+Version: 1.30.1
 Author: Lara Lusa <lusa@ifom-firc.it>, R. Gentleman, M. Ruschhaupt
 Description: A collection of meta-analysis tools for analysing high
         throughput experimental data
@@ -8,5 +8,6 @@ Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 License: Artistic-2.0
 Depends: R (>= 2.10), methods, Biobase (>= 2.5.5), genefilter
 Imports: methods, Biobase (>= 2.5.5)
+Suggests: RColorBrewer
 LazyLoad: yes
 biocViews: Bioinformatics
